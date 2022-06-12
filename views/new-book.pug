@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1= title 
+  
+  include form-error
+  //- initialize the form
+  form(action="/books/new-book", method="post")
+    //- include input fields from form.pug
+    include form 

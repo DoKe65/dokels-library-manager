@@ -1,0 +1,16 @@
+extends layout 
+
+block content
+  h1= title
+  h2= book.title 
+  p #[span Author:] #{book.author} 
+  p #[span Genre:] #{book.genre} 
+  p #[span Published in:] #{book.year}
+
+  br
+  a(href=`/books/${book.id}/update-book` class="button") Update Book 
+      
+  a(href=`/books/${book.id}/delete` class="button") Delete Book
+
+  a(href="/books" class="button") Back
+

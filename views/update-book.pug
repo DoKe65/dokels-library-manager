@@ -1,0 +1,9 @@
+extends layout 
+
+block content 
+  h1= title 
+
+  include form-error 
+
+  form(action=`/books/${book.id}/update-book`, method="post")
+    include form
