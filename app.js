@@ -36,10 +36,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-// app.use('/users', booksRouter);
+
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
@@ -52,16 +52,20 @@ app.use((err, req, res, next) => {
   if(err.status === 404) {
     res.locals.message = "Sorry! We couldn't find the page you were looking for.";
     res.render("page-not-found", { err, title: "Page Not Found"});
-  } else if (!err.status) {
-    err.status = 500;
-    res.locals.message = "Sorry! There was an unexpected error on the server";
-    res.render("error", { err, title: "Server Error" });
-    console.log(`Error Status: ${err.status}, ${err.message}, Stack: ${err.stack}`);
-  } else {
-    res.locals.message = err.message;
-    // res.render("error", {err});
-    console.log(err.stack);
+  } else if (res.status(err.status || 500)) {
+    res.locals.message = err.message; 
+    res.render("error", {err})
   }
+  // } else if (!err.status) {
+  //   err.status = 500;
+  //   res.locals.message = "Sorry! There was an unexpected error on the server";
+  //   res.render("error", { err, title: "Server Error" });
+  //   console.log(`Error Status: ${err.status}, ${err.message}, Stack: ${err.stack}`);
+  // } else {
+  //   res.locals.message = err.message;
+  //   // res.render("error", {err});
+  //   console.log(err.stack);
+  // }
 });
 
 

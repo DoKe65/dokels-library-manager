@@ -21,6 +21,7 @@ router.get("/", (req, res, next) => {
     } catch (error) {
       // Pass error to the global error handler in app.js
      next(error);
+    // return error;
     }
   }
 }
@@ -53,7 +54,7 @@ router.get("/books", asyncHandler(async (req, res) => {
       book = await Book.build(req.body);
       res.render("new-book", { book, errors: error.errors, title: "Create new Book", btnText: "Create New Book" });
     } else {
-      throw error;
+      throw Error;
     }
   }
 }));
