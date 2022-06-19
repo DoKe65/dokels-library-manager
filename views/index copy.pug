@@ -1,10 +1,9 @@
 extends layout
 
 block content
-  div.header
-    h1= title
-    p 
-      a(href="books/new-book", class="button") Create New Book
+  h1= title
+  p 
+    a(href="books/new-book", class="button") Create New Book
 
   table 
     thead 
@@ -21,12 +20,3 @@ block content
           td= book.author 
           td= book.genre 
           td= book.year
-
-  div.footer
-    ul.pagination 
-      each btn in btns 
-        li
-          a(class=`button`, href=`?bksToDisplay=${btn.bksToDisplay}&page=${btn.page}`)= btn.btnNr
-
-    
-    

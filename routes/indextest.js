@@ -1,5 +1,6 @@
 const express = require('express');
 const { get } = require('express/lib/response');
+const { restart } = require('nodemon');
 const db = require('../models');
 const router = express.Router();
 // Import Book model
@@ -27,25 +28,15 @@ router.get("/", (req, res, next) => {
 }
 
 /**
- * GET all articles to be listed on start page
+ * GET all articles to be listed on start page with pagination
  */
+
 router.get("/books", asyncHandler(async (req, res) => {
-  
-  let { page, bksToDisplay } = req.query;
-  if (!page || !bksToDisplay) {
-    page = 0;
-    bksToDisplay = 5;
-  }
-  const { count, rows } = await Book.findAndCountAll({limit: bksToDisplay, offset: page * bksToDisplay});
-  const books = rows;
-  const totalBooks = count;
-  const numBtns = Math.ceil(totalBooks / bksToDisplay);
-  let btns = [];
-  for (let i=1; i < numBtns+1; i++) {
-    btns.push({btnNr: i, page: i-1, bksToDisplay: bksToDisplay, class: "inactive"});
-  }
-  res.render("index", { books, btns, title: "Books" });
-  
+  const books = await Book.findAll();
+  // test count
+  const message = `<h3>Hello there</h3>`;
+  const count = await Book.count();
+  res.render("index", { books, message, title: "Books" });
 }));
 
 /**

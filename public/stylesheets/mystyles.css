@@ -1,0 +1,44 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(199, 207, 214);
+}
+
+main {
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header p {
+  margin: 0;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pagination {
+  display: flex;
+  margin-top: 2rem;
+}
+
+.pagination li {
+  margin-left: 10px;
+}
+
+.active {
+  background-color: red;
+}
+  
