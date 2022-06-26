@@ -26,19 +26,30 @@ main {
 
 .footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.footer p {
+  margin: 0;
 }
 
 .pagination {
   display: flex;
-  margin-top: 2rem;
 }
 
 .pagination li {
   margin-left: 10px;
 }
 
-.active {
-  background-color: red;
+a.button {
+  background-color: #019875;
+}
+
+.pagination a.active {
+  background-color: #fff;
+  color: #019875;
+  border: 1px solid #019875;
 }
   

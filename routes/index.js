@@ -42,7 +42,13 @@ router.get("/books", asyncHandler(async (req, res) => {
   const numBtns = Math.ceil(totalBooks / bksToDisplay);
   let btns = [];
   for (let i=1; i < numBtns+1; i++) {
-    btns.push({btnNr: i, page: i-1, bksToDisplay: bksToDisplay, class: "inactive"});
+    btns.push({
+      btnNr: i, 
+      page: i-1, 
+      bksToDisplay: bksToDisplay, 
+      className: "button",
+      addActive: (text) => alert(text)
+    });
   }
   res.render("index", { books, btns, title: "Books" });
   
