@@ -4,8 +4,11 @@ block content
   
   div.header
     h1= title
-    input(type="search")
-
+    form(action="/books/", method="get")
+      input(type="search", name="searchTerm", value=`${searchTerm || ""}`)
+      //- input(type="submit", value="Search" class="button")
+    if message 
+      p= message
   table 
     thead 
       tr 
@@ -24,11 +27,17 @@ block content
 
   div.footer
     p 
-      a(href="books/new-book", class="button") Create New Book
+      if searchTerm
+        a(href="/query", class="button") Create New Book
+      else 
+        a(href="books/new-book", class="button") Create New Book
     ul.pagination 
       each btn in btns 
         li
-          a(class="button", href=`?bksToDisplay=${btn.bksToDisplay}&page=${btn.page}`)= btn.btnNr
+          if searchTerm
+            a(class="button", href=`?searchTerm=${searchTerm}&bksToDisplay=${btn.bksToDisplay}&page=${btn.page}`)= btn.btnNr
+          else
+            a(class="button", href=`?bksToDisplay=${btn.bksToDisplay}&page=${btn.page}`)= btn.btnNr
 
           
     script(src="/javascripts/script.js")

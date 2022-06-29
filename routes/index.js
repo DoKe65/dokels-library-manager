@@ -1,7 +1,10 @@
 const express = require('express');
-const { get } = require('express/lib/response');
+const { get, redirect } = require('express/lib/response');
 const db = require('../models');
 const router = express.Router();
+const sequelize = require("Sequelize");
+const { query } = require('express');
+const Op = sequelize.Op;
 // Import Book model
 const Book = require("../models").Book;
 
@@ -15,7 +18,7 @@ router.get("/", (req, res, next) => {
  * @param {function} - cb, the callback function 
  * returns an asynchronous try/catch block
  */
- function asyncHandler(cb) {
+function asyncHandler(cb) {
   return async(req, res, next) => {
     try {
       await cb(req, res, next)
@@ -27,37 +30,82 @@ router.get("/", (req, res, next) => {
 }
 
 /**
- * GET all articles to be listed on start page
+ * GET all articles to be listed on start page and adds pagination buttons
+ * if a search term is present, use that to get the matching books and create
+ * the pagination buttons according to the test results
  */
-router.get("/books", asyncHandler(async (req, res) => {
-  
-  let { page, bksToDisplay } = req.query;
+router.get("/books/", asyncHandler(async (req, res) => {
+  let btns = [];
+  let { searchTerm, page, bksToDisplay } = req.query;
+
+  // Make sure to start with 5 books on the first page on start
   if (!page || !bksToDisplay) {
     page = 0;
     bksToDisplay = 5;
   }
-  const { count, rows } = await Book.findAndCountAll({limit: bksToDisplay, offset: page * bksToDisplay});
-  const books = rows;
-  const totalBooks = count;
-  const numBtns = Math.ceil(totalBooks / bksToDisplay);
-  let btns = [];
-  for (let i=1; i < numBtns+1; i++) {
-    btns.push({
-      btnNr: i, 
-      page: i-1, 
-      bksToDisplay: bksToDisplay, 
-      className: "button",
-      addActive: (text) => alert(text)
-    });
+  // Basic query object for the findAndCoutAll query on the book object, needed for pagination
+  const queryObj = {
+    limit: bksToDisplay,
+    offset: page * bksToDisplay
   }
-  res.render("index", { books, btns, title: "Books" });
+
+  // function to create the pagination buttons
+  function createPagBtns(numBtns) {
+    // let btns = [];
+    for (let i=1; i < numBtns+1; i++) {
+      btns.push({
+        btnNr: i, 
+        page: i-1, 
+        bksToDisplay: bksToDisplay, 
+        className: "button",
+      });
+    }
+  }
   
+  // if there's no search term, find All books and create pagination buttons according to the result
+  if(!searchTerm) {
+    
+    const { count, rows } = await Book.findAndCountAll(queryObj);
+    const books = rows;
+    const totalBooks = count;
+    const numBtns = Math.ceil(totalBooks / bksToDisplay);
+    createPagBtns(numBtns);
+    res.render("index", { books, btns, title: "Books" });
+  } else {
+    // If there's a search term, use it to find all matching books and create pagination buttons according to the result
+    // Extend the query object to take in the search term
+    queryObj.where = {
+      [Op.or]: {
+        title: { [Op.like]: `%${searchTerm}%` },
+        author: { [Op.like]: `%${searchTerm}%` },
+        genre: { [Op.like]: `%${searchTerm}%` },
+        year: { [Op.like]: `%${searchTerm}%` }
+      }
+    }
+    const { count, rows } = await Book.findAndCountAll(queryObj);
+    const books = rows;
+    const totalBooks = count;
+    const numBtns = Math.ceil(totalBooks / bksToDisplay);
+    createPagBtns(numBtns);
+    let message;
+    if(btns.length === 0) {
+      message = `Sorry! Ther are no books matching your search for "${searchTerm}".`;
+    } else {
+      message = `We found ${totalBooks} books matching your search for "${searchTerm}":`;
+    }
+
+    res.render("index", { books, btns, message, searchTerm, title: "Search Result" });
+  }
 }));
 
 /**
  * Render the form to register a new book
  */
- router.get('/books/new-book', (req, res, next) => {
+router.get("/query", (req, res, next) => {
+  res.redirect("/books/new-book");
+});
+
+router.get('/books/new-book', (req, res, next) => {
   res.render("new-book", {book: {}, title: "Create New Book", btnText: "Create Book"});
 });
 
