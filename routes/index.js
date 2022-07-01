@@ -35,13 +35,14 @@ function asyncHandler(cb) {
  * the pagination buttons according to the test results
  */
 router.get("/books/", asyncHandler(async (req, res) => {
-  let btns = [];
+  
   let { searchTerm, page, bksToDisplay } = req.query;
 
-  // Make sure to start with 5 books on the first page on start
+  // Make sure to start with x books on the first page on start
+  const booksPerPage = 6;
   if (!page || !bksToDisplay) {
     page = 0;
-    bksToDisplay = 5;
+    bksToDisplay = booksPerPage;
   }
   // Basic query object for the findAndCoutAll query on the book object, needed for pagination
   const queryObj = {
@@ -50,8 +51,8 @@ router.get("/books/", asyncHandler(async (req, res) => {
   }
 
   // function to create the pagination buttons
+  let btns = [];
   function createPagBtns(numBtns) {
-    // let btns = [];
     for (let i=1; i < numBtns+1; i++) {
       btns.push({
         btnNr: i, 
@@ -64,7 +65,6 @@ router.get("/books/", asyncHandler(async (req, res) => {
   
   // if there's no search term, find All books and create pagination buttons according to the result
   if(!searchTerm) {
-    
     const { count, rows } = await Book.findAndCountAll(queryObj);
     const books = rows;
     const totalBooks = count;

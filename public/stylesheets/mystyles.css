@@ -1,9 +1,17 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;600&display=swap');
 * {
   box-sizing: border-box;
+  font-family: Assistant;
 }
 
 body {
-  background-color: rgb(199, 207, 214);
+  background-color: #ffffffd4;
+  background-image: url("../images/book.jpg"); 
+  background-size: cover;
+  background-blend-mode: overlay;
+  background-attachment: fixed;
+  padding-top: 2rem;
 }
 
 main {
@@ -13,15 +21,36 @@ main {
   margin: auto;
 }
 
+p {
+  font-size: 1.2rem;
+  margin-left: 0;
+}
+
 .header {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  min-height: 120px;
 }
 
 .header p {
   margin: 0;
+  flex-basis: 100%;
+}
+
+#searchForm {
+  display: flex;
+}
+
+#searchForm .search {
+  margin-left: 0;
+}
+
+table {
+  background-color: #f8f3f3c9;
 }
 
 .footer {
@@ -35,6 +64,24 @@ main {
   margin: 0;
 }
 
+.form-btns {
+  display: flex;
+}
+
+.book-details a.button,
+.form-btns a.button,
+input[type=submit] {
+  margin-left: 0;
+  margin-right: 1rem;
+}
+input {
+  transition: all ease-in-out 0.5;
+}
+input:focus {
+  box-shadow: 5px 5px 15px 2px #373535;
+  outline: none;
+}
+
 .pagination {
   display: flex;
 }
@@ -43,13 +90,39 @@ main {
   margin-left: 10px;
 }
 
-a.button {
+a.button, input[type=submit] {
   background-color: #019875;
+  font-family: Assistant;
+  font-weight: 600;
+  font-size: 1rem;
 }
 
 .pagination a.active {
   background-color: #fff;
   color: #019875;
   border: 1px solid #019875;
+}
+
+.delete {
+  margin: 2rem 0;
+}
+
+.del-book {
+  margin-right: 2rem;
+  background-color: #ff005d9c;
+  padding: 0.53rem;
+  color: black;
+}
+
+
+cite {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  font-size: 1rem;
+}
+
+.error {
+  margin-left: 0;
 }
   

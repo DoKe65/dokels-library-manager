@@ -4,9 +4,9 @@ block content
   
   div.header
     h1= title
-    form(action="/books/", method="get")
-      input(type="search", name="searchTerm", value=`${searchTerm || ""}`)
-      //- input(type="submit", value="Search" class="button")
+    form(action="/books", method="get" id="searchForm")
+      input(type="search", name="searchTerm", id="search", value=`${searchTerm || ""}`)
+      input(type="submit", value="Search" class="button search")
     if message 
       p= message
   table 
@@ -21,9 +21,9 @@ block content
         tr 
           td  
             a(href=`/books/${book.id}`) #{book.title} 
-          td= book.author 
-          td= book.genre 
-          td= book.year
+            td= book.author 
+            td= book.genre 
+            td= book.year
 
   div.footer
     p 
@@ -39,9 +39,9 @@ block content
           else
             a(class="button", href=`?bksToDisplay=${btn.bksToDisplay}&page=${btn.page}`)= btn.btnNr
 
+  script(src="/javascripts/script.js")
           
-    script(src="/javascripts/script.js")
-          
+    
   
 
     
