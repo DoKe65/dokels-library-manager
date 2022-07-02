@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;600&display=swap');
 * {
   box-sizing: border-box;
-  font-family: Assistant;
+  font-family: Assistant, sans-serif;
 }
 
 body {
@@ -92,7 +92,7 @@ input:focus {
 
 a.button, input[type=submit] {
   background-color: #019875;
-  font-family: Assistant;
+  font-family: Assistant, sans-serif;
   font-weight: 600;
   font-size: 1rem;
 }
